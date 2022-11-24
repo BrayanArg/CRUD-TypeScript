@@ -1,0 +1,171 @@
+class pacientes{
+   id:number = 0;
+   nombre:string = '';
+   apellido:string = '';
+   tipoCita:string = '';
+   fecha:Date = new Date;
+
+   arrayP:any[] = [];
+}
+
+interface crudMetodos extends pacientes{   
+   getAll():void;
+   getById(id:number):void;
+   getByNombre(nombre:string):void;
+   create(id:number, nombre:string, apellido:string,tipoCita:string, fecha:Date):void;
+   update(id:number, nombre:string, apellido:string,tipoCita:string, fecha:Date):void;
+   delete(id:number):void;
+}
+
+class metodos implements crudMetodos{
+   id: number = 0;
+   nombre: string = '';
+   apellido: string = '';
+   tipoCita: string = '';
+   fecha: Date = new Date();
+   arrayP: any[] = [{id: 1, nombre:'Juan',apellido:'Sanchez', tipoCita:'Odontología', fecha:new Date('2022-12-10')},
+   {id: 2, nombre:'Susan',apellido:'Ortiz', tipoCita:'Pediatría', fecha:new Date('2022-12-01')},
+   {id: 3, nombre:'Leidy',apellido:'Cruz', tipoCita:'Psiquiatría', fecha:new Date('2022-12-25')}];
+
+
+   getAll():void{
+      let alert:string = "";
+      for(var i of this.arrayP){
+         alert += JSON.stringify(i)+"\n -------------------------------------";
+      }
+         window.alert(alert);
+   };
+
+   getById(id:number):void{
+      let coincidencia = this.arrayP.findIndex(i => i.id == id);
+      if(coincidencia != -1){
+      window.alert(JSON.stringify(this.arrayP[coincidencia]));
+      }else{
+         window.alert("No se encontró el id!");
+      }
+   };
+
+   getByNombre(nombre:string):void{
+      let coincidencia = this.arrayP.findIndex(i => i.nombre == nombre);
+      if(coincidencia != -1){
+      window.alert(JSON.stringify(this.arrayP[coincidencia]));
+      }else{
+         window.alert("No se encontró el nombre!");
+      }
+   };
+
+   create(id:number, nombre:string, apellido:string,tipoCita:string, fecha:Date):void{
+      this.arrayP.push({id:id, nombre: nombre, apellido:apellido, tipoCita:tipoCita, fecha:fecha});
+      // console.log(this.arrayP);
+      window.alert("Registro creado exitosamente!");
+   };
+
+   update(id:number, nombre:string, apellido:string,tipoCita:string, fecha:Date):void{
+      let coincidencia = this.arrayP.findIndex(i => i.id == id);
+      // console.log(this.arrayP);
+      if(coincidencia != -1){
+      this.arrayP[coincidencia] = {id:id, nombre: nombre, apellido:apellido, tipoCita:tipoCita, fecha:fecha};
+         window.alert("Registro actualizado exitosamente!");
+      }else{
+         window.alert("El registro no existe!");
+      }
+      // console.log(this.arrayP);
+   };
+   delete(id:number):void{
+      let coincidencia = this.arrayP.findIndex(i => i.id == id);
+      if(coincidencia != -1){
+         let verificar = Number(window.prompt("¿¡Esta seguro de elimnar el registro?! \n 1.Sí. \n 2.No."));
+         if(verificar == 1){
+         this.arrayP.splice(coincidencia, 1);
+            window.alert("Registro eliminado exitosamente!")
+         }else if(verificar == 2){
+            window.alert("El registro NO se eliminó!")
+         }else{
+            window.alert("Opción incorrecta!")
+         }
+      }else{
+         window.alert("El registro no existe!");
+      }
+      // console.log(this.arrayP);
+      // console.log(this.arrayP);
+   };
+}
+
+let prueba = new metodos();
+
+let id:number = 0;
+let nombre:string = "";
+let apellido:string = "";
+let tipoCita:string = "";
+let fecha:string = "";
+
+let opcion:number = -1;
+// console.log(prueba.getAll());
+// console.log(prueba.getById(3));
+// console.log(prueba.getByNombre("Juan"));
+// console.log(prueba.create(4,'Julia','Sanchez','Médico general',new Date('2022-12-31')));
+// console.log(prueba.update(1,'José','Sanchez','Odontología',new Date('2022-12-10')));
+// console.log(prueba.delete(1));
+
+
+do{
+   opcion = Number(window.prompt("Dígite el número de la opción correspondiente:"+
+   "\n 1.Mostrar todos los registros. \n 2.Mostrar registro por id. \n 3.Mostrar registro por nombre. \n 4.Agregar nuevo registro."+
+   "\n 5.Actualizar registro por id. \n 6.Eliminar registro por id. \n 0.Salir"));
+
+   switch(opcion){
+      case 1:{
+            prueba.getAll();
+         break;
+      }
+
+      case 2:{
+         id = Number(window.prompt("Dígite el id:"));
+         prueba.getById(id);
+         break;
+      }
+
+      case 3:{
+         nombre = window.prompt("Dígite el nombre:");
+         prueba.getByNombre(nombre);
+         break;
+      }
+
+      case 4:{
+         id = Number(window.prompt("Dígite el id:"));
+         nombre = window.prompt("Dígite nombre:");
+         apellido = window.prompt("Dígite apellido:");
+         tipoCita = window.prompt("Dígite tipo de cita:");
+         fecha = window.prompt("Dígite fecha:");
+         prueba.create(id,nombre,apellido,tipoCita,new Date(fecha));
+         break;
+      }
+
+      case 5:{
+         id = Number(window.prompt("Dígite el id:"));
+         nombre = window.prompt("Dígite nombre:");
+         apellido = window.prompt("Dígite apellido:");
+         tipoCita = window.prompt("Dígite tipo de cita:");
+         fecha = window.prompt("Dígite fecha:");
+         prueba.update(id,nombre,apellido,tipoCita,new Date(fecha));
+         break;
+      }
+
+      case 6:{
+         id = Number(window.prompt("Dígite el id:"));
+         prueba.delete(id);
+         break;
+      }
+
+      case 0:{
+         console.log("Hasta luego!");
+         break;
+      }
+
+      default:{
+         console.log("Seleccione una opción correcta!");
+         break;
+      }
+   }
+
+}while(opcion != 0)
